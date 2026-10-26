@@ -61,6 +61,11 @@
   ::selection { background: #cfe4ff; color: var(--color-ink); }
 }
 
+/* No celular, abre espaço no fim da página para a barra fixa de pedido do produto. */
+@media (max-width: 767px) {
+  body.com-barra-pedido { padding-bottom: 76px; }
+}
+
 /* Container central com 20px de respiro no celular e 32px no computador. */
 @utility container-site {
   width: min(var(--container-site), calc(100% - 40px));
