@@ -49,7 +49,7 @@ export function Hero() {
               fill
               sizes="(max-width: 767px) 52vw, 420px"
               className="object-cover"
-              preload
+              loading="eager"
             />
           </div>
           <div
@@ -61,7 +61,7 @@ export function Hero() {
               fill
               sizes="(max-width: 767px) 52vw, 420px"
               className="object-cover"
-              preload
+              loading="eager"
             />
           </div>
           <div
@@ -73,7 +73,8 @@ export function Hero() {
               fill
               sizes="(max-width: 767px) 74vw, 580px"
               className="object-cover"
-              preload
+              loading="eager"
+              fetchPriority="high"
             />
           </div>
         </figure>

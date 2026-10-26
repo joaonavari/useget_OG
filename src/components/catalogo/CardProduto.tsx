@@ -4,8 +4,15 @@ import { Icon } from '@/components/ui/Icon';
 import { urlProduto } from '@/lib/catalogo';
 import type { Produto } from '@/types/catalogo';
 
+type Props = {
+  produto: Produto;
+  titulo?: 'h2' | 'h3';
+  /** true no primeiro cartão visível da página: a foto carrega com prioridade. */
+  prioridade?: boolean;
+};
+
 /** Cartão de produto nas listas. Leva para a página do produto. */
-export function CardProduto({ produto, titulo = 'h3' }: { produto: Produto; titulo?: 'h2' | 'h3' }) {
+export function CardProduto({ produto, titulo = 'h3', prioridade = false }: Props) {
   const Titulo = titulo;
   const foto = produto.variantes[0]?.imagens[0];
   const comCores = produto.variantes.length > 1;
@@ -22,6 +29,8 @@ export function CardProduto({ produto, titulo = 'h3' }: { produto: Produto; titu
             alt={foto.alt}
             fill
             sizes="(max-width: 767px) calc(100vw - 40px), 560px"
+            loading={prioridade ? 'eager' : 'lazy'}
+            fetchPriority={prioridade ? 'high' : undefined}
             className="object-cover transition-transform duration-700 ease-mola group-hover:scale-[1.03]"
           />
         )}

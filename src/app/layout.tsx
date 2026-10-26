@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import { Footer } from '@/components/layout/Footer';
 import { Header, type ItemMenu } from '@/components/layout/Header';
 import { WhatsAppFlutuante } from '@/components/layout/WhatsAppFlutuante';
+import { MetaPixel } from '@/components/analytics/MetaPixel';
 import { siteConfig } from '@/config/site';
 import { getCategorias, urlCategoria } from '@/lib/catalogo';
 import './globals.css';
@@ -44,7 +45,7 @@ export default async function RootLayout({ children }: LayoutProps<'/'>) {
   ];
 
   return (
-    <html lang="pt-BR" className={inter.variable}>
+    <html lang="pt-BR" className={inter.variable} data-scroll-behavior="smooth">
       <body className="flex min-h-dvh flex-col font-sans">
         <a
           href="#conteudo"
@@ -58,7 +59,8 @@ export default async function RootLayout({ children }: LayoutProps<'/'>) {
         </main>
         <Footer itens={menu} />
         <WhatsAppFlutuante />
-        {/* Pixel da Meta: entra aqui na etapa de SEO e Pixel. */}
+        {/* Pixel da Meta: liga sozinho quando NEXT_PUBLIC_META_PIXEL_ID estiver definido. */}
+        <MetaPixel />
       </body>
     </html>
   );

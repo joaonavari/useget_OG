@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 import { CardProduto } from '@/components/catalogo/CardProduto';
 import { DetalhesProduto } from '@/components/produto/DetalhesProduto';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { EsqueletoProduto } from '@/components/ui/Esqueleto';
 import { Trilha } from '@/components/ui/Trilha';
 import { siteConfig } from '@/config/site';
 import {
@@ -41,7 +43,20 @@ export async function generateMetadata({ params }: PageProps<'/categorias/[categ
   };
 }
 
-export default async function PaginaProduto({ params }: PageProps<'/categorias/[categoria]/[produto]'>) {
+/*
+ * A leitura do endereço fica dentro de <Suspense>: na navegação pelo site, o
+ * esqueleto aparece na hora e o conteúdo entra logo em seguida. Os produtos
+ * conhecidos continuam gerados por completo no build.
+ */
+export default function PaginaProduto({ params }: PageProps<'/categorias/[categoria]/[produto]'>) {
+  return (
+    <Suspense fallback={<EsqueletoProduto />}>
+      <ConteudoProduto params={params} />
+    </Suspense>
+  );
+}
+
+async function ConteudoProduto({ params }: { params: PageProps<'/categorias/[categoria]/[produto]'>['params'] }) {
   const { categoria: categoriaSlug, produto: produtoSlug } = await params;
   const [produto, categoria] = await Promise.all([getProduto(categoriaSlug, produtoSlug), getCategoria(categoriaSlug)]);
   if (!produto || !categoria) notFound();

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { BotaoWhatsApp } from '@/components/ui/BotaoWhatsApp';
 import { Icon } from '@/components/ui/Icon';
+import { registrarVisualizacaoProduto } from '@/lib/analytics';
 import { mensagens } from '@/lib/whatsapp';
 import type { Categoria, Produto } from '@/types/catalogo';
 
@@ -32,6 +33,10 @@ export function DetalhesProduto({ produto, categoria }: Props) {
     return () => document.body.classList.remove('com-barra-pedido');
   }, []);
 
+  useEffect(() => {
+    registrarVisualizacaoProduto({ produto: produto.nome, categoria: categoria.nome });
+  }, [produto.nome, categoria.nome]);
+
   function escolherVariante(id: string) {
     setVarianteId(id);
     setFotoIndice(0);
@@ -49,7 +54,8 @@ export function DetalhesProduto({ produto, categoria }: Props) {
                 src={foto.src}
                 alt={foto.alt}
                 fill
-                preload
+                loading="eager"
+                fetchPriority="high"
                 sizes="(max-width: 767px) calc(100vw - 40px), 620px"
                 className="animate-[trocar-foto_380ms_ease] object-cover"
               />

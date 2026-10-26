@@ -32,3 +32,17 @@ export function registrarContatoWhatsApp(dados: DadosContato) {
     ...dados,
   });
 }
+
+/**
+ * Visualização de produto ("ViewContent" da Meta). Se o Pixel ainda estiver
+ * carregando, tenta de novo uma vez depois de um instante.
+ */
+export function registrarVisualizacaoProduto(dados: { produto: string; categoria: string }) {
+  if (typeof window === 'undefined') return;
+  const enviar = () => {
+    if (typeof window.fbq !== 'function') return false;
+    window.fbq('track', 'ViewContent', { content_name: dados.produto, content_category: dados.categoria, content_type: 'product' });
+    return true;
+  };
+  if (!enviar()) window.setTimeout(enviar, 1500);
+}

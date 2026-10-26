@@ -51,3 +51,6 @@ Thumbs.db
 
 # configurações locais do Claude Code
 .claude/settings.local.json
+
+# exemplo de variáveis de ambiente (pode ir para o git)
+!.env.example

@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 import { CardProduto } from '@/components/catalogo/CardProduto';
 import { EmBreve } from '@/components/catalogo/EmBreve';
 import { secoesDeCategoria } from '@/components/secoes';
 import { Contato } from '@/components/secoes/Contato';
+import { EsqueletoCategoria } from '@/components/ui/Esqueleto';
 import { Trilha } from '@/components/ui/Trilha';
 import { getCategoria, getCategorias, getProdutosDaCategoria, urlCategoria } from '@/lib/catalogo';
 
@@ -32,7 +34,20 @@ export async function generateMetadata({ params }: PageProps<'/categorias/[categ
   };
 }
 
-export default async function PaginaCategoria({ params }: PageProps<'/categorias/[categoria]'>) {
+/*
+ * A leitura do endereço fica dentro de <Suspense>: na navegação pelo site, o
+ * esqueleto aparece na hora e o conteúdo entra logo em seguida. As categorias
+ * conhecidas continuam geradas por completo no build.
+ */
+export default function PaginaCategoria({ params }: PageProps<'/categorias/[categoria]'>) {
+  return (
+    <Suspense fallback={<EsqueletoCategoria />}>
+      <ConteudoCategoria params={params} />
+    </Suspense>
+  );
+}
+
+async function ConteudoCategoria({ params }: { params: PageProps<'/categorias/[categoria]'>['params'] }) {
   const { categoria: slug } = await params;
   const categoria = await getCategoria(slug);
   if (!categoria) notFound();
@@ -57,8 +72,8 @@ export default async function PaginaCategoria({ params }: PageProps<'/categorias
 
           {temProdutos ? (
             <div className="grid gap-5 md:grid-cols-2 md:gap-6">
-              {produtos.map((produto) => (
-                <CardProduto key={produto.id} produto={produto} titulo="h2" />
+              {produtos.map((produto, i) => (
+                <CardProduto key={produto.id} produto={produto} titulo="h2" prioridade={i === 0} />
               ))}
             </div>
           ) : (
