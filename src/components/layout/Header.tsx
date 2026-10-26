@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { BotaoWhatsApp } from '@/components/ui/BotaoWhatsApp';
 import { mensagens } from '@/lib/whatsapp';
@@ -9,7 +10,9 @@ import { Wordmark } from './Wordmark';
 export type ItemMenu = { href: string; rotulo: string };
 
 export function Header({ itens }: { itens: ItemMenu[] }) {
+  const caminho = usePathname();
   const [aberto, setAberto] = useState(false);
+  const atual = (href: string) => (href !== '/' && caminho.startsWith(href) ? 'page' : undefined);
   const [rolou, setRolou] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const botaoRef = useRef<HTMLButtonElement>(null);
@@ -60,7 +63,12 @@ export function Header({ itens }: { itens: ItemMenu[] }) {
 
         <nav aria-label="Navegação principal" className="ml-auto hidden gap-7 md:flex">
           {itens.map((item) => (
-            <Link key={item.href} href={item.href} className="text-sm text-nav transition-colors hover:text-ink">
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={atual(item.href)}
+              className="text-sm text-nav transition-colors hover:text-ink aria-[current=page]:font-medium aria-[current=page]:text-ink"
+            >
               {item.rotulo}
             </Link>
           ))}
@@ -110,6 +118,7 @@ export function Header({ itens }: { itens: ItemMenu[] }) {
           <Link
             key={item.href}
             href={item.href}
+            aria-current={atual(item.href)}
             onClick={() => setAberto(false)}
             className="block border-b border-[#ededf0] py-3.5 text-[19px] font-semibold tracking-[-0.02em] last:border-b-0"
           >

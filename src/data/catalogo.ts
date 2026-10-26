@@ -42,6 +42,7 @@ export const categorias: Categoria[] = [
       'placa-google-azul-1143.webp',
       'Placa USEGET Avalie no Google, azul, em acrílico com NFC e QR Code.',
     ),
+    secoes: ['como-ativar', 'para-quem'],
     ordem: 1,
     seo: {
       titulo: 'Placas NFC para comércios',

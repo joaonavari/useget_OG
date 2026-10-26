@@ -27,6 +27,12 @@ export type Especificacao = {
   valor: string;
 };
 
+/**
+ * Seções extras que podem aparecer na página da categoria, depois dos produtos.
+ * Cada uma é um componente em src/components/secoes/.
+ */
+export type SecaoCategoria = 'como-ativar' | 'para-quem';
+
 /** Ícones disponíveis para as categorias (desenhados em components/ui/Icon.tsx). */
 export type IconeCategoria = 'loja' | 'fabrica' | 'pet';
 
@@ -43,6 +49,8 @@ export type Categoria = {
   icone: IconeCategoria;
   /** Foto do cartão na página inicial. Sem ela, o cartão mostra o ícone. */
   imagemCapa?: Imagem;
+  /** Seções extras da página, na ordem em que aparecem. */
+  secoes?: SecaoCategoria[];
   /** Texto do aviso "em breve" quando a categoria ainda não tem produtos. */
   textoEmBreve?: string;
   /** Posição nas listas (menor aparece primeiro). */
