@@ -1,13 +1,27 @@
-export default function Home() {
+import { Categorias } from '@/components/home/Categorias';
+import { Destaques } from '@/components/home/Destaques';
+import { Hero } from '@/components/home/Hero';
+import { Material } from '@/components/home/Material';
+import { ComoFunciona } from '@/components/secoes/ComoFunciona';
+import { Contato } from '@/components/secoes/Contato';
+import { PedidoQuantidade } from '@/components/secoes/PedidoQuantidade';
+import { PerguntasFrequentes } from '@/components/secoes/PerguntasFrequentes';
+import { perguntasFrequentes } from '@/data/faq';
+import { getCategorias } from '@/lib/catalogo';
+
+export default async function PaginaInicial() {
+  const categorias = await getCategorias();
+
   return (
-    <section className="container-site py-24 text-center">
-      <p className="mb-3.5 font-semibold text-secondary">Em construção</p>
-      <h1 className="titulo-1">
-        Um toque.
-        <br />
-        <span className="texto-gradiente">E o cliente chega lá.</span>
-      </h1>
-      <div className="h-[150vh]" />
-    </section>
+    <>
+      <Hero />
+      <Destaques />
+      <Categorias categorias={categorias} />
+      <ComoFunciona />
+      <Material />
+      <PedidoQuantidade />
+      <PerguntasFrequentes perguntas={perguntasFrequentes} />
+      <Contato />
+    </>
   );
 }
